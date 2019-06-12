@@ -12,16 +12,15 @@ import GameplayKit
 class GameScene: SKScene {
     
 
+    //sprites
+    var bed:SKNode?
     
     override func didMove(to view: SKView) {
-        // Calculate playable margin
-        let maxAspectRatio: CGFloat = 16.0/9.0
-        let maxAspectRatioHeight = size.width / maxAspectRatio
-        let playableMargin: CGFloat = (size.height
-            - maxAspectRatioHeight)/2
-        let playableRect = CGRect(x: 0, y: playableMargin,
-                                  width: size.width, height: size.height-playableMargin*2)
-        physicsBody = SKPhysicsBody(edgeLoopFrom: playableRect)
+        self.bed = self.childNode(withName: "bed")
+        self.bed!.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 50, height: 50))
+        self.bed!.physicsBody?.categoryBitMask = 4
+        self.bed!.physicsBody?.collisionBitMask = 0
+        self.bed!.physicsBody?.pinned = true
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
