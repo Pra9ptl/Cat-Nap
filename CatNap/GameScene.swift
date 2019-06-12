@@ -10,6 +10,9 @@ import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene {
+    
+
+    
     override func didMove(to view: SKView) {
         // Calculate playable margin
         let maxAspectRatio: CGFloat = 16.0/9.0
@@ -19,6 +22,18 @@ class GameScene: SKScene {
         let playableRect = CGRect(x: 0, y: playableMargin,
                                   width: size.width, height: size.height-playableMargin*2)
         physicsBody = SKPhysicsBody(edgeLoopFrom: playableRect)
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first!
+        let mousePosition = touch.location(in: self)
+        
+        let spritTouched = self.atPoint(mousePosition)
+        
+        if(spritTouched.name == "block")
+        {
+            spritTouched.removeFromParent()
+        }
     }
 
 
