@@ -9,13 +9,15 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate{
     
 
     //sprites
     var bed:SKNode?
     
     override func didMove(to view: SKView) {
+        
+        self.physicsWorld.contactDelegate = self
         self.bed = self.childNode(withName: "bed")
         self.bed!.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 50, height: 50))
         self.bed!.physicsBody?.categoryBitMask = 4
@@ -32,6 +34,31 @@ class GameScene: SKScene {
         if(spritTouched.name == "block")
         {
             spritTouched.removeFromParent()
+        }
+    }
+    
+    func didBegin(_ contact: SKPhysicsContact) {
+        let objectA = contact.bodyA.node
+        let objectB = contact.bodyB.node
+        
+        print("+++ \(objectA!.name) hits \(objectB!.name) +++")
+        
+        if(objectA!.name == "ground" && objectB?.name == "cat"){
+            print("Game Over")
+        }
+        
+        if(objectB!.name == "ground" && objectA?.name == "cat"){
+            print("Game Over")
+        }
+        
+        if(objectA!.name == "bed" && objectB!.name == "cat"){
+            objectB?.physicsBody?.isDynamic = false
+            print("You Win")
+        }
+        
+        if(objectB!.name == "bed" && objectA!.name == "cat"){
+            objectA?.physicsBody?.isDynamic = false
+            print("You Win")
         }
     }
 
